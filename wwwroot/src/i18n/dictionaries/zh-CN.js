@@ -1,4 +1,5 @@
 ﻿const zhCN = {
+  temperatureHumidity2: {"hoverAnimation": "移入动画", "alwaysAnimation": "常显动画", "animations": {"none": "无动画", "fade": "柔和淡入", "slide-up": "向上滑入", "slide-down": "向下滑入", "zoom": "中心缩放", "bounce": "弹性展开", "flip": "立体翻转", "float": "轻盈浮动", "breathe": "缩放呼吸", "glow": "发光脉冲"}, "rows": "数据参数", "label": "标签文字", "value": "默认值", "unit": "单位文字", "bind": "绑定参数", "unbind": "解除绑定", "remove": "删除", "add": "新增参数", "newLabel": "温度2：", "labelDisplay": "数据标签", "always": "常显示", "hover": "鼠标移入显示", "name": "温湿度组件2", "background": "底图（PNG/JPG）", "temperature": "温度：", "humidity": "湿度："},
   auth: {
     sessionExpired: '登录信息已过期，请重新登录',
   },

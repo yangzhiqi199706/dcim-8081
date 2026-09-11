@@ -23,6 +23,9 @@ const getDependencies = (shape) => {
     const firstChild = getFirstChild(shape);
     const childAttrs = firstChild && firstChild.attrs ? firstChild.attrs : {};
     const bindingType = getBindingType(shape);
+    if (firstChild && firstChild.className === 'wetHtml' && childAttrs.hoverOnly && Array.isArray(childAttrs.rows)) {
+        return ['realtime', 'alarm', 'param'];
+    }
 
     if (firstChild && (firstChild.className === 'alarmList' || childAttrs.cat === 'alarmpie' || childAttrs.name === 'ipImage')) {
         return ALARM_DEPENDENCIES;

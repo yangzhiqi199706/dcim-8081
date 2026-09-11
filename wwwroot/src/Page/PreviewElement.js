@@ -1,3 +1,4 @@
+import WetHtml2 from './WetHtml2';
 ﻿import React, { useRef, useState, Fragment, useEffect } from 'react';
 import { t } from '../i18n';
 // import { Group, Image, Rect } from "react-konva";
@@ -19,6 +20,7 @@ const PreviewElement = ({ shapeProps, id, wheight, wwidth, wscale, onhandleResiz
     const isFirefox = typeof navigator !== 'undefined' && /firefox/i.test(navigator.userAgent || '');
     const groupRef = useRef();
     const [divTab, setdivTab] = useState(0);
+    const [wetHovered, setWetHovered] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     // const [imgurl, setimgurl] = useState((shapeProps.moduleJson.children.length > 0 && shapeProps.moduleJson.children[0].className === 'Image') ? shapeProps.moduleJson.children[0].attrs.image : (shapeProps.src.indexOf('http') > -1 ? '../Images/' + shapeProps.src.split('/Images/')[0] : shapeProps.src));
     const [imgurl, setimgurl] = useState('Images/icon/full.png');// Comment translated to English.
@@ -478,6 +480,15 @@ const PreviewElement = ({ shapeProps, id, wheight, wwidth, wscale, onhandleResiz
                             <Rect width={img.attrs.width} height={img.attrs.height} />
                         </Fragment>
                     } else if (Ele === 'wetHtml') {// Comment translated to English.
+                        if (img.attrs.hoverOnly) {
+                            return <Fragment key={i}>
+                                <Html divProps={{ style: { pointerEvents: "auto", zIndex: wetHovered ? 20 : 10 } }}>
+                                    <WetHtml2 attrs={img.attrs} onHoverChange={setWetHovered}
+                                        onActivate={() => { if (clickEvnt.length > 0) dealClick(); }} />
+                                </Html>
+                                <Rect width={img.attrs.width} height={img.attrs.height} />
+                            </Fragment>;
+                        }
                         return <Fragment key={i}>
                             <Html>
                                 <div className="numstatus">

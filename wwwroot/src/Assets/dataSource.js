@@ -236,6 +236,11 @@ export const mergePreviewShapesByDataSource = (shapes) => {
     const target = mergedById.get(shapeId);
     const targetChild = getShapeModuleJson(target).children[0];
     const sourceChild = getShapeModuleJson(shape).children[0];
+    if (targetChild && sourceChild && targetChild.className === 'wetHtml' && Array.isArray(targetChild.attrs.rows)) {
+      const rowIds = new Set(getShapeModuleJson(shape).attrs.dataKey.map(binding => binding.rowId));
+      targetChild.attrs.rows = targetChild.attrs.rows.map(row => rowIds.has(row.id)
+        ? (sourceChild.attrs.rows.find(candidate => candidate.id === row.id) || row) : row);
+    }
     if (targetChild && sourceChild && targetChild.className === 'Echart'
         && sourceChild.className === 'Echart' && targetChild.attrs && sourceChild.attrs) {
       mergeChartData(targetChild.attrs, sourceChild.attrs);

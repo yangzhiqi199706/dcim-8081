@@ -1,3 +1,4 @@
+import WetHtml2 from './WetHtml2';
 import React, { useRef, useState, useEffect, Fragment } from 'react';
 import { Group, Image, Transformer, Rect } from "react-konva";
 import useImage from 'use-image';
@@ -268,6 +269,14 @@ const ConElement = ({ shapeProps, id, isSelected, showSelectionFrame, isAlignmen
                             <Rect width={img.attrs.width} height={img.attrs.height} />
                         </Fragment>
                     } else if (Ele === 'wetHtml') {
+                        if (img.attrs.hoverOnly) {
+                            return <Fragment key={i}>
+                                <Html divProps={{ style: { pointerEvents: "none", zIndex: isElementHover ? 20 : 10 } }}>
+                                    <WetHtml2 attrs={img.attrs} hovered={!!isElementHover} />
+                                </Html>
+                                <Rect width={img.attrs.width} height={img.attrs.height} />
+                            </Fragment>;
+                        }
                         return <Fragment key={i}>
                             <Html divProps={{ style: { pointerEvents: "none" } }}>
                                 <div className="numstatus">

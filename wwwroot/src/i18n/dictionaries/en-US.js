@@ -1,4 +1,5 @@
 ﻿const enUS = {
+  temperatureHumidity2: {"hoverAnimation": "Hover animation", "alwaysAnimation": "Persistent animation", "animations": {"none": "None", "fade": "Fade in", "slide-up": "Slide up", "slide-down": "Slide down", "zoom": "Zoom in", "bounce": "Spring pop", "flip": "3D flip", "float": "Float", "breathe": "Breathe", "glow": "Glow pulse"}, "rows": "Data parameters", "label": "Label", "value": "Default value", "unit": "Unit", "bind": "Bind parameter", "unbind": "Unbind", "remove": "Delete", "add": "Add parameter", "newLabel": "Temperature 2:", "labelDisplay": "Data labels", "always": "Always visible", "hover": "Show on hover", "name": "Temperature / Humidity 2", "background": "Background (PNG/JPG)", "temperature": "Temperature:", "humidity": "Humidity:"},
   auth: {
     sessionExpired: 'Session expired. Please sign in again.',
   },

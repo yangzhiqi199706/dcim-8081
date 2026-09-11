@@ -715,6 +715,17 @@ export default {
                     return;
                 }
                 const dataKey = moduleAttrs.dataKey;// Comment translated to English.
+                if (firstChild.className === 'wetHtml' && firstChild.attrs.hoverOnly && Array.isArray(firstChild.attrs.rows)) {
+                    firstChild.attrs.rows = firstChild.attrs.rows.map(row => {
+                        const binding = (dataKey || []).find(item => item.rowId === row.id);
+                        if (!binding) return row;
+                        const proxy = { moduleJson: { children: [{ className: 'Text', attrs: { text: row.value, fill: row.color } }] } };
+                        const resolved = binding.parkey ? fetchparData(binding, proxy) : fetchData(binding, proxy);
+                        return { ...row, value: resolved.moduleJson.children[0].attrs.text, color: resolved.moduleJson.children[0].attrs.fill };
+                    });
+                    newimages.push(newshapeProps);
+                    return;
+                }
                 if (dataKey && dataKey.length > 0) {
                     const dataWhere = moduleAttrs.where;// Comment translated to English.
                     const moduleAttr = Array.isArray(moduleAttrs.moduleAttr) ? moduleAttrs.moduleAttr : [];

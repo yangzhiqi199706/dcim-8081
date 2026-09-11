@@ -3,6 +3,9 @@ import { Close, Lock, PermMedia } from '@mui/icons-material';
 import httpsend from '../Assets/httpsend';
 import { Select, Button } from 'antd';
 import { t } from '../i18n';
+import WetRowsEditor from './WetRowsEditor';
+import { initializeWetRows } from './wetRows';
+import { WET_HOVER_ANIMATIONS, WET_ALWAYS_ANIMATIONS } from './wetAnimations';
 import { createLatestDataSourceRequestGuard, normalizeDataSourceHost } from '../Assets/dataSource';
 import { ensureChartAttributeControls } from './chartAttributeControls';
 // import { Select, Button, message } from 'antd';
@@ -617,6 +620,7 @@ const ElementAttr = memo((props) => {
 
     const [showDevBox, setshowDevBox] = useState(0);// Comment translated to English.
     const [showParamBox, setshowParamBox] = useState(0);// Comment translated to English.
+    const [wetBindingRow, setWetBindingRow] = useState(null);
     const [showParamsBox, setshowParamsBox] = useState(0);// Comment translated to English.
     const [showPagesBox, setshowPagesBox] = useState(0);// Comment translated to English.
     const [showEventsBox, setshowEventsBox] = useState(0);// Comment translated to English.
@@ -1309,6 +1313,47 @@ const ElementAttr = memo((props) => {
         }
     }
     // Comment translated to English.
+    const hoverSensor = shapeAttr.children.find(child => child.className === 'wetHtml' && child.attrs.hoverOnly);
+    if (hoverSensor) {
+        attrList.push(<WetRowsEditor key={'wet-rows-' + shapeId} moduleJson={shapeAttr}
+            onChange={moduleJson => props.onChange({ ...dragShape, moduleJson })}
+            onBind={rowId => {
+                setWetBindingRow(rowId);
+                setparam(null);
+                setcusparam(null);
+                setshowParamBox(1);
+            }} />);
+        attrList.push(<div className="attrBox" key="temperature-humidity-label-display">
+            <label>{t('temperatureHumidity2.labelDisplay')}</label>
+            <select value={hoverSensor.attrs.labelDisplay || 'hover'}
+                onChange={(event) => handleValChange({ target: {
+                    value: event.target.value,
+                    dataset: { ...event.target.dataset }
+                } })}
+                data-attrcode="labelDisplay"
+                data-attrtype="labelDisplay"
+                data-attrwhere={hoverSensor.attrs.name}>
+                <option value="always">{t('temperatureHumidity2.always')}</option>
+                <option value="hover">{t('temperatureHumidity2.hover')}</option>
+            </select>
+        </div>);
+        const alwaysVisible = hoverSensor.attrs.labelDisplay === 'always';
+        const animationField = alwaysVisible ? 'alwaysAnimation' : 'hoverAnimation';
+        const animationOptions = alwaysVisible ? WET_ALWAYS_ANIMATIONS : WET_HOVER_ANIMATIONS;
+        attrList.push(<div className="attrBox" key="temperature-humidity-animation">
+            <label>{t('temperatureHumidity2.' + animationField)}</label>
+            <select aria-label={t('temperatureHumidity2.' + animationField)}
+                value={hoverSensor.attrs[animationField] || (alwaysVisible ? 'none' : 'fade')}
+                onChange={event => {
+                    hoverSensor.attrs[animationField] = event.target.value;
+                    props.onChange({ ...dragShape });
+                }}>
+                {animationOptions.map(value => <option key={value} value={value}>
+                    {t('temperatureHumidity2.animations.' + value)}
+                </option>)}
+            </select>
+        </div>);
+    }
     if (shapeAttr.attrs.moduleAttr) {
         shapeAttr.attrs.moduleAttr.forEach((ats, y) => {
             let tleunikey = shapeId + '-' + y;// Comment translated to English.
@@ -1540,7 +1585,7 @@ const ElementAttr = memo((props) => {
 
                 }
                 if (a.attrType === 'hardwareInputNew') {
-                    if (a.attrCode === 'dataDevKey') {// Comment translated to English.
+                    if (a.attrCode === 'dataDevKey' && !hoverSensor) {// Comment translated to English.
                         attrList.push(<div className="attrBox" key={unikey}>
                             <label>{a.attrName}</label>
                             <textarea className="attrTextarea" autoComplete="off" id="defDevKey" placeholder="" readOnly="readonly" defaultValue={paramData}></textarea>
@@ -2257,12 +2302,13 @@ const ElementAttr = memo((props) => {
                 </div>
             </div>
             }
-            <span className="layui-layer-setwin" onClick={() => setshowParamBox(0)}>
+            <span className="layui-layer-setwin" onClick={() => { setshowParamBox(0); setWetBindingRow(null); }}>
                 <Close />
             </span>
             <div className="layui-layer-btn">
                 <Button type="primary" onClick={async () => {
                     let desc;
+                    if ((ShowParaIndex === 0 && (!paramDevId || !param)) || (ShowParaIndex !== 0 && !cusparam)) return;
                     if (ShowParaIndex === 0) {
                         desc = {
                             key: paramDevId.split('&')[0],
@@ -2279,7 +2325,14 @@ const ElementAttr = memo((props) => {
                         }
                     }
                     setparamData(JSON.stringify(desc));
-                    shapeAttr.attrs.dataKey = [desc];
+                    if (wetBindingRow !== null) {
+                        initializeWetRows(shapeAttr);
+                        shapeAttr.attrs.dataKey = shapeAttr.attrs.dataKey.filter(item => item.rowId !== wetBindingRow);
+                        shapeAttr.attrs.dataKey.push({ ...desc, rowId: wetBindingRow });
+                        setWetBindingRow(null);
+                    } else {
+                        shapeAttr.attrs.dataKey = [desc];
+                    }
                     props.onChange({
                         ...dragShape
                     }, true)

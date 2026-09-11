@@ -1,4 +1,74 @@
 [
+{
+  "moduleName": "__i18n__.temperatureHumidity2.name",
+  "iconBase64": "Images/icon/temperature-humidity.svg",
+  "moduleJson": {
+    "attrs": {
+      "dataKey": [],
+      "moduleAttr": [
+        {
+          "attrGroupName": "__i18n__.auto.k0002",
+          "attrGroupContent": [
+            {
+              "attrName": "__i18n__.auto.k0003",
+              "attrCode": "dataDevKey",
+              "attrType": "hardwareInputNew",
+              "attrWhere": "this"
+            }
+          ]
+        },
+        {
+          "attrGroupName": "__i18n__.auto.k0004",
+          "attrGroupContent": [
+            {
+              "attrName": "__i18n__.auto.k0001",
+              "attrCode": "text",
+              "attrType": "textarea",
+              "attrWhere": "wetHtml"
+            },
+            {
+              "attrName": "__i18n__.auto.k0020",
+              "attrCode": "width",
+              "attrType": "number",
+              "attrWhere": "wetHtml"
+            },
+            {
+              "attrName": "__i18n__.auto.k0021",
+              "attrCode": "height",
+              "attrType": "number",
+              "attrWhere": "wetHtml"
+            },
+            {
+              "attrName": "__i18n__.temperatureHumidity2.background",
+              "attrCode": "image",
+              "attrType": "image",
+              "attrWhere": "wetHtml"
+            }
+          ]
+        }
+      ]
+    },
+    "children": [
+      {
+        "attrs": {
+          "width": 100,
+          "height": 100,
+          "text": "1#",
+          "name": "wetHtml",
+          "dataWen": 23.33,
+          "dataWet": 56.33,
+          "fill1": "#03DFFB",
+          "fill2": "#03DFFB",
+          "hoverOnly": true,
+          "image": "Images/icon/temperature-humidity.svg"
+        },
+        "className": "wetHtml"
+      }
+    ],
+    "width": 100,
+    "height": 100
+  }
+},
   {
     "moduleName": "__i18n__.auto.k0098",
     "iconBase64": "Images/icon/zu.png",
